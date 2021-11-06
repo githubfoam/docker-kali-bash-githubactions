@@ -3,7 +3,7 @@ name: "kali linux bash local CI workflow"
 
 on:
   push:
-    branches: [ test ]
+    branches: [ main ]
 
 
 jobs:
@@ -35,17 +35,9 @@ jobs:
         docker image history kali:netsec
         docker system df -v               
         docker image inspect kali:netsec  
-        # docker container run --name toolkali kali:netsec
         docker container ls -a
-        #docker container exec -ti toolkali "hping3 -v" #the input device is not a TTY
-        # docker run --name toolkali kali:netsec hping3 -v
-        # docker run --name toolkali kali:netsec hping3 --traceroute -v -1 www.wisetut.com
         docker run --name toolkali kali:netsec sh -c "hping3 --traceroute -v -1 www.wisetut.com"
         docker container ls -a
-        # docker container stop toolkali
-        # docker container ls -a
-        # docker run -d --name toolkali kali:netsec watch "date >> /var/log/date.log"
-        # docker container ls -a
 
                          
 
