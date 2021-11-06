@@ -1,4 +1,4 @@
-name: "kali linux bash local CI workflow"
+name: "kali-tools-top10 CI workflow"
 
 
 on:
@@ -14,7 +14,7 @@ jobs:
     env:
       distribution: "kalilinux" #https://hub.docker.com/r/kalilinux/kali-rolling
       version: "latest"
-      name: "kali:netsec"
+      name: "kali:kali-tools-top10"
     steps:
     - uses: actions/checkout@v2
     - name: "os fingerprinting"
@@ -30,22 +30,13 @@ jobs:
       run: |
         # destroyed afterwards (use --rm )
         # all subsequent Dockerfile commands generate new images and the cache is not used
-        sudo docker build --no-cache --rm  -t ${name} . --file dockerfiles/Dockerfile.kalilinux 
+        sudo docker build --no-cache --rm  -t ${name} . --file dockerfiles/Dockerfile.kalilinux.kali-tools-top10 
         docker image ls
         docker image history ${name} 
         docker system df -v               
         docker image inspect ${name}   
-        # docker container run --name toolkali ${name} 
         docker container ls -a
-        #docker container exec -ti toolkali "hping3 -v" #the input device is not a TTY
-        # docker run --name toolkali ${name}  hping3 -v
-        # docker run --name toolkali ${name}  hping3 --traceroute -v -1 www.wisetut.com
         docker run --name toolkali ${name}  sh -c "hping3 --traceroute -v -1 www.wisetut.com"
-        docker container ls -a
-        # docker container stop toolkali
-        # docker container ls -a
-        # docker run -d --name toolkali ${name}  watch "date >> /var/log/date.log"
-        # docker container ls -a
 
                          
 
