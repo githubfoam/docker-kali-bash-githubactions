@@ -1,0 +1,92 @@
+name: "kali linux bash local CI workflow"
+
+
+on:
+  push:
+    branches: [ test ]
+
+
+jobs:
+
+  ubuntu-latest-job:
+    name: "docker kali linux ubuntu 20.04"
+    runs-on: ubuntu-latest
+    env:
+      distribution: "archlinux" #https://hub.docker.com/_/archlinux
+      version: "latest"
+      name: "archlinux:ansible"
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: |
+        hostnamectl status
+        lsb_release -a
+        lsb_release -d
+        cat /etc/lsb-release
+        cat /etc/issue
+        cat /etc/os-release
+        sudo apt-get install -y neofetch && neofetch   
+    - name: "docker build kali linux"
+      run: |
+        # destroyed afterwards (use --rm )
+        # all subsequent Dockerfile commands generate new images and the cache is not used
+        sudo docker build --no-cache --rm  -t kali:netsec . --file dockerfiles/Dockerfile.kalilinux 
+        docker image ls
+        docker image history kali:netsec
+        docker system df -v               
+        docker image inspect kali:netsec  
+        # docker container run --name toolkali kali:netsec
+        docker container ls -a
+        #docker container exec -ti toolkali "hping3 -v" #the input device is not a TTY
+        # docker run --name toolkali kali:netsec hping3 -v
+        # docker run --name toolkali kali:netsec hping3 --traceroute -v -1 www.wisetut.com
+        docker run --name toolkali kali:netsec sh -c "hping3 --traceroute -v -1 www.wisetut.com"
+        docker container ls -a
+        # docker container stop toolkali
+        # docker container ls -a
+        # docker run -d --name toolkali kali:netsec watch "date >> /var/log/date.log"
+        # docker container ls -a
+
+                         
+
+  # ubuntu-2004-job:
+  #   name: "nxlog ubuntu  20.04"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: "os fingerprinting"
+  #     run: |
+  #       hostnamectl status
+  #       lsb_release -a
+  #       lsb_release -d
+  #       cat /etc/lsb-release
+  #       cat /etc/issue
+  #       cat /etc/os-release
+  #       sudo apt-get install -y neofetch && neofetch   
+  #   - name: "deploy nxlog"
+  #     run: sudo make deploy-nxlog-2004  
+        
+
+
+  # ubuntu-1804-job:
+  #   name: "nxlog ubuntu-18.04"
+  #   runs-on: ubuntu-18.04
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: "os fingerprinting"
+  #     run: |
+  #       hostnamectl status
+  #       lsb_release -a
+  #       lsb_release -d
+  #       cat /etc/lsb-release
+  #       cat /etc/issue
+  #       cat /etc/os-release
+  #       sudo apt-get install -y neofetch && neofetch    
+    # - name: "deploy nxlog"
+      # The following packages have unmet dependencies:
+      # mono-xsp4 : Depends: mono-xsp4-base (= 4.2-2.1) but it is not going to be installed
+      # run: sudo make deploy-nxlog 
+
+
+
+
