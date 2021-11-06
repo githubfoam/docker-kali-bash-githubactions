@@ -36,7 +36,7 @@ jobs:
         docker system df -v               
         docker image inspect ${name}   
         docker container ls -a
-        docker run --name toolkali ${name}  sh -c "hping3 --traceroute -v -1 www.wisetut.com"
+        # docker run --name toolkali ${name}  sh -c "hping3 --traceroute -v -1 www.wisetut.com"
 
                          
 
