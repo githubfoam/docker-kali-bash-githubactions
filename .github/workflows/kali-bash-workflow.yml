@@ -13,9 +13,9 @@ jobs:
     name: "docker kali linux ubuntu 20.04"
     runs-on: ubuntu-latest
     env:
-      distribution: "archlinux" #https://hub.docker.com/_/archlinux
+      distribution: "kalilinux" #https://hub.docker.com/r/kalilinux/kali-rolling
       version: "latest"
-      name: "archlinux:ansible"
+      name: "kali:netsec"
     steps:
     - uses: actions/checkout@v2
     - name: "os fingerprinting"
@@ -31,13 +31,13 @@ jobs:
       run: |
         # destroyed afterwards (use --rm )
         # all subsequent Dockerfile commands generate new images and the cache is not used
-        sudo docker build --no-cache --rm  -t kali:netsec . --file dockerfiles/Dockerfile.kalilinux 
+        sudo docker build --no-cache --rm  -t ${name}  . --file dockerfiles/Dockerfile.kalilinux 
         docker image ls
-        docker image history kali:netsec
+        docker image history ${name} 
         docker system df -v               
-        docker image inspect kali:netsec  
+        docker image inspect ${name}  
         docker container ls -a
-        docker run --name toolkali kali:netsec sh -c "hping3 --traceroute -v -1 www.wisetut.com"
+        docker run --name toolkali ${name}  sh -c "hping3 --traceroute -v -1 www.wisetut.com"
         docker container ls -a
 
                          

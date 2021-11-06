@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ncat  \
     hping3
 
+# https://www.kali.org/docs/containers/using-kali-docker-images/
+# https://www.kali.org/docs/containers/official-kalilinux-docker-images/
 #testing
 RUN hping3 -v
 
