@@ -1,9 +1,11 @@
 FROM kalilinux/kali-rolling
 LABEL org.opencontainers.image.authors="githubfoam"
 
+RUN apt-get install -y apt-utils
+
 #clean start
 RUN apt-get update -y && apt-get upgrade -y && apt-get autoremove - && apt-get clean 
-RUN apt-get install -y apt-utils
+
 
 #packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
