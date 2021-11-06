@@ -7,14 +7,15 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get autoremove - && apt-get c
 
 # https://www.kali.org/docs/general-use/metapackages/
 # The most commonly used tools
-RUN apt-get update -y && apt-get install -y kali-tools-top10
+# RUN apt-get update -y && apt-get install -y kali-tools-top10
+RUN apt-cache show kali-tools-top10
 
 #custom packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    aircrack-ng \
-    ncat  \
-    hping3
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     aircrack-ng \
+#     ncat  \
+#     hping3
 
-#testing
-RUN hping3 -v
+# #testing
+# RUN hping3 -v
 
