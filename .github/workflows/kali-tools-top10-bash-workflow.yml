@@ -37,6 +37,18 @@ jobs:
         docker image inspect ${name}   
         docker container ls -a
         # docker run --name toolkali ${name}  sh -c "hping3 --traceroute -v -1 www.wisetut.com"
+    - name: "docker forensics kali linux"
+      run: |
+        # destroyed afterwards (use --rm )
+        # all subsequent Dockerfile commands generate new images and the cache is not used
+        sudo docker build --no-cache --rm  -t ${name} . --file dockerfiles/Dockerfile.kalilinux.kali-tools-top10 
+        docker image ls
+        docker image history ${name} 
+        docker system df -v               
+        docker image inspect ${name}   
+        docker container ls -a
+        docker run --detach --name toolkali ${name}  
+        docker container ls -a
 
                          
 
