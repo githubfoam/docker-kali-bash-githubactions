@@ -15,7 +15,7 @@ jobs:
       distribution: "kalilinux" #https://hub.docker.com/r/kalilinux/kali-rolling
       version: "latest"
       name: "kali/zmap"
-      dockerfilename: "Dockerfile.kalilinux.kali-tools-web"
+      dockerfilename: "Dockerfile.zmap"
     steps:
     - uses: actions/checkout@v2
     - name: "os fingerprinting"
@@ -37,7 +37,7 @@ jobs:
         docker system df -v               
         docker image inspect ${name}:${version}  
         docker inspect -f '{{.Config.Entrypoint}}' ${name}:${version}
-        # docker run ${name}:${version} zmap -p 80 172.217.0.0/24 -o IPresults.csv #OK
+        docker run ${name}:${version} zmap -p 80 172.217.0.0/24 -o IPresults.csv #OK
 
 
            
